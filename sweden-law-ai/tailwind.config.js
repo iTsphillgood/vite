@@ -7,9 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        'legal-blue': '#002B5C', // Swedish flag blue-ish / Corporate
-        'legal-gold': '#FECC00', // Swedish flag yellow-ish
-        'law-gray': '#F3F4F6',
+        'glass-bg': 'rgba(15, 23, 42, 0.6)',
+        'glass-border': 'rgba(255, 255, 255, 0.1)',
+        'neon-blue': '#3b82f6',
+        'neon-gold': '#fbbf24',
+      },
+      backdropBlur: {
+        'xs': '2px',
+      },
+      animation: {
+        'blob': 'blob 7s infinite',
+      },
+      keyframes: {
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+        }
       }
     },
   },
