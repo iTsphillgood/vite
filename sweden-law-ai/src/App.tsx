@@ -5,12 +5,12 @@ import {
   ChevronRight, MoreVertical, Scale, Play,
   CheckCircle, Mic, HardDrive, Fingerprint,
   Database, Lock, Wifi, Zap, FileText, Upload, X, ArrowRight,
-  MapPin, CreditCard, MessageCircle, Smartphone
+  MapPin, CreditCard, MessageCircle, Smartphone,
+  Users, GitBranch, AlertTriangle, Link as LinkIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- Components ---
-
+// --- BankID Simulation Component ---
 const BankIDLogin = ({ onComplete }: { onComplete: () => void }) => {
   const [status, setStatus] = useState<'idle' | 'scanning' | 'verifying' | 'success'>('idle');
 
@@ -66,7 +66,7 @@ const BankIDLogin = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-// --- Alibi Builder Component ---
+// --- Citizen Mode: Alibi Builder ---
 const AlibiBuilder = () => {
   const [step, setStep] = useState(1);
   const [narrative, setNarrative] = useState('');
@@ -75,7 +75,6 @@ const AlibiBuilder = () => {
 
   const analyzeNarrative = () => {
     setAnalyzing(true);
-    // Simulate AI extraction
     setTimeout(() => {
       setFacts([
         { id: 1, type: 'location', claim: 'At Ica Maxi Solna', time: '14:00', verified: false, source: 'Google Maps' },
@@ -226,11 +225,9 @@ const AlibiBuilder = () => {
                       <p className="text-[10px] text-slate-500 uppercase tracking-wider">Confidence Score</p>
                       <p className="text-3xl font-bold text-green-400">98%</p>
                     </div>
-                    <div className="h-12 w-12 bg-white p-1 rounded-lg">
-                       <div className="w-full h-full bg-slate-900 flex items-center justify-center">
-                         <div className="text-[8px] text-slate-500 text-center leading-none">SECURE<br/>HASH</div>
-                       </div>
-                    </div>
+                    <button className="flex items-center text-xs text-blue-400 hover:text-blue-300">
+                      <LinkIcon className="w-3 h-3 mr-1" /> Share with Lawyer
+                    </button>
                   </div>
                 </div>
               </div>
@@ -248,11 +245,101 @@ const AlibiBuilder = () => {
   );
 };
 
+// --- Professional Mode: Lawyer Dashboard ---
+const LawyerDashboard = () => {
+  return (
+    <div className="h-full grid grid-cols-12 gap-6">
+
+      {/* Col 1: Case Files / Ingestion */}
+      <div className="col-span-3 bg-slate-800 rounded-xl border border-slate-700 overflow-hidden flex flex-col">
+        <div className="p-4 border-b border-slate-700 bg-slate-800/50">
+          <h3 className="font-bold text-white flex items-center"><FolderOpen className="w-4 h-4 mr-2" /> FUP Explorer</h3>
+        </div>
+        <div className="flex-1 overflow-auto p-2 space-y-2">
+          {['Förhör (A) - Målsägande', 'Förhör (B) - Vittne 1', 'Teknisk protokoll', 'Telefoni - Masttömning'].map((file, i) => (
+            <div key={i} className="flex items-center p-2 rounded hover:bg-slate-700 cursor-pointer text-slate-300 text-sm">
+              <FileText className="w-4 h-4 mr-2 text-blue-400" /> {file}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Col 2: The "FUP X-Ray" / Relationship Map */}
+      <div className="col-span-6 bg-slate-900 rounded-xl border border-slate-700 relative overflow-hidden">
+        <div className="absolute top-4 left-4 z-10 bg-slate-800/80 backdrop-blur px-3 py-1 rounded-lg border border-slate-600">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center"><GitBranch className="w-3 h-3 mr-2" /> Relationship Map</h3>
+        </div>
+
+        {/* Mock Graph Visual */}
+        <div className="w-full h-full flex items-center justify-center relative">
+           {/* Edges */}
+           <div className="absolute top-1/2 left-1/2 w-64 h-0.5 bg-slate-700 -translate-x-1/2 -rotate-45"></div>
+           <div className="absolute top-1/2 left-1/2 w-48 h-0.5 bg-slate-700 -translate-x-1/2 rotate-45"></div>
+           <div className="absolute top-1/2 left-1/2 w-32 h-0.5 bg-red-500/50 -translate-x-1/2 rotate-12"></div> {/* Conflict Edge */}
+
+           {/* Nodes */}
+           <div className="absolute top-[30%] left-[30%] w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center flex-col z-10 shadow-lg">
+             <Users className="w-6 h-6 text-slate-400" />
+             <span className="text-[10px] text-slate-300 mt-1">Vittne A</span>
+           </div>
+           <div className="absolute top-[60%] right-[30%] w-20 h-20 rounded-full bg-slate-800 border-2 border-blue-500 flex items-center justify-center flex-col z-10 shadow-lg shadow-blue-900/20">
+             <Fingerprint className="w-8 h-8 text-blue-400" />
+             <span className="text-[10px] text-blue-300 mt-1 font-bold">Tilltalad</span>
+           </div>
+           <div className="absolute bottom-[20%] left-[40%] w-14 h-14 rounded-full bg-slate-800 border-2 border-red-500 flex items-center justify-center flex-col z-10 shadow-lg">
+             <AlertTriangle className="w-5 h-5 text-red-400" />
+             <span className="text-[10px] text-red-300 mt-1">Konflikt</span>
+           </div>
+        </div>
+      </div>
+
+      {/* Col 3: Strategy & Timeline */}
+      <div className="col-span-3 flex flex-col space-y-6">
+
+        {/* Strategy Box */}
+        <div className="flex-1 bg-slate-800 rounded-xl border border-slate-700 p-4 flex flex-col">
+          <h3 className="font-bold text-white mb-4 flex items-center"><Brain className="w-4 h-4 mr-2 text-purple-400" /> Strategy AI</h3>
+          <div className="flex-1 bg-slate-900/50 rounded-lg p-3 mb-3 text-xs space-y-3 overflow-auto">
+            <p className="text-slate-300">
+              <span className="text-purple-400 font-bold">Analysis:</span> Witness A places the defendant at the scene at 14:05.
+            </p>
+            <p className="text-slate-300">
+              <span className="text-red-400 font-bold">Conflict:</span> Digital Alibi (from Citizen Mode) confirms Swish payment at ICA Maxi at 14:05. Distance is 4km.
+            </p>
+            <p className="text-slate-300">
+              <span className="text-green-400 font-bold">Suggestion:</span> Argue reliability of Witness A. Use NJA 2015 s. 702 regarding digital evidence weight.
+            </p>
+          </div>
+          <button className="w-full py-2 bg-purple-600/20 text-purple-300 rounded border border-purple-500/30 text-xs font-bold hover:bg-purple-600/30 transition">
+            Generate Defense Motion
+          </button>
+        </div>
+
+        {/* Timeline Discrepancies */}
+        <div className="h-1/3 bg-slate-800 rounded-xl border border-slate-700 p-4">
+           <h3 className="font-bold text-white mb-2 text-sm">Timeline Gaps</h3>
+           <div className="space-y-2">
+             <div className="flex justify-between items-center text-xs bg-red-500/10 p-2 rounded border border-red-500/20">
+               <span className="text-red-300">14:00 - 14:15</span>
+               <span className="text-slate-400">Location Mismatch</span>
+             </div>
+             <div className="flex justify-between items-center text-xs bg-slate-700/30 p-2 rounded">
+               <span className="text-slate-300">14:30</span>
+               <span className="text-slate-500">Bus Ticket Verified</span>
+             </div>
+           </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 // --- Main App ---
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeView, setActiveView] = useState<'alibi' | 'dashboard'>('alibi');
+  const [userMode, setUserMode] = useState<'citizen' | 'lawyer'>('citizen'); // Toggle between modes
 
   if (!isAuthenticated) {
     return <BankIDLogin onComplete={() => setIsAuthenticated(true)} />;
@@ -271,23 +358,59 @@ export default function App() {
         </div>
 
         <div className="flex-1 px-3 space-y-1 mt-4">
-          <p className="px-3 text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Citizen Mode</p>
-          <button onClick={() => setActiveView('alibi')} className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition ${activeView === 'alibi' ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400 hover:text-white'}`}>
-            <Fingerprint className="w-5 h-5" />
-            <span className="font-medium text-sm">My Alibi</span>
-          </button>
-          <button onClick={() => setActiveView('dashboard')} className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition ${activeView === 'dashboard' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}>
-            <LayoutGrid className="w-5 h-5" />
-            <span className="font-medium text-sm">Case Status</span>
-          </button>
+          <div className="mb-6 px-3">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Role Select</p>
+            <div className="flex bg-slate-800 rounded-lg p-1 border border-slate-700">
+              <button
+                onClick={() => setUserMode('citizen')}
+                className={`flex-1 text-xs py-1.5 rounded-md font-medium transition ${userMode === 'citizen' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+              >
+                Citizen
+              </button>
+              <button
+                onClick={() => setUserMode('lawyer')}
+                className={`flex-1 text-xs py-1.5 rounded-md font-medium transition ${userMode === 'lawyer' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}`}
+              >
+                Lawyer
+              </button>
+            </div>
+          </div>
+
+          {userMode === 'citizen' ? (
+            <>
+              <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg bg-slate-800 text-white transition">
+                <Fingerprint className="w-5 h-5" />
+                <span className="font-medium text-sm">My Alibi</span>
+              </button>
+              <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white transition">
+                <MessageCircle className="w-5 h-5" />
+                <span className="font-medium text-sm">Chat with Counsel</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg bg-slate-800 text-white transition">
+                <LayoutGrid className="w-5 h-5" />
+                <span className="font-medium text-sm">Dashboard</span>
+              </button>
+              <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white transition">
+                <Users className="w-5 h-5" />
+                <span className="font-medium text-sm">Clients</span>
+              </button>
+              <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white transition">
+                <Scale className="w-5 h-5" />
+                <span className="font-medium text-sm">Legal Research</span>
+              </button>
+            </>
+          )}
         </div>
 
         <div className="p-4 border-t border-slate-800">
            <div className="flex items-center space-x-3">
-             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 flex items-center justify-center text-xs font-bold text-slate-900">JD</div>
+             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${userMode === 'citizen' ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-900' : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'}`}>JD</div>
              <div className="flex-1 overflow-hidden">
                <p className="text-sm font-medium text-white truncate">Johan Doe</p>
-               <p className="text-xs text-slate-500 truncate">Private Account</p>
+               <p className="text-xs text-slate-500 truncate">{userMode === 'citizen' ? 'Private Account' : 'Senior Associate'}</p>
              </div>
            </div>
         </div>
@@ -296,23 +419,22 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#0F172A]">
         <header className="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-slate-900/50 backdrop-blur-sm">
-          <h2 className="text-lg font-semibold text-white capitalize">{activeView === 'alibi' ? 'Alibi Builder' : 'Dashboard'}</h2>
+          <div className="flex items-center">
+             <h2 className="text-lg font-semibold text-white capitalize mr-3">
+               {userMode === 'citizen' ? 'Alibi Builder' : 'Professional Dashboard'}
+             </h2>
+             {userMode === 'lawyer' && <span className="bg-purple-600/20 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded border border-purple-500/30">PRO</span>}
+          </div>
           <div className="flex items-center space-x-4">
              <Bell className="w-5 h-5 text-slate-400" />
           </div>
         </header>
 
         <div className="flex-1 overflow-auto p-8">
-          {activeView === 'alibi' ? (
+          {userMode === 'citizen' ? (
             <AlibiBuilder />
           ) : (
-            <div className="max-w-4xl mx-auto text-center pt-20">
-              <h2 className="text-3xl font-bold text-white mb-4">Case #2025-001</h2>
-              <p className="text-slate-400">Current Status: <span className="text-yellow-400 font-bold">Investigation Ongoing</span></p>
-              <div className="mt-12 p-8 border border-dashed border-slate-700 rounded-xl">
-                <p className="text-slate-500">Your lawyer has not shared any new documents yet.</p>
-              </div>
-            </div>
+            <LawyerDashboard />
           )}
         </div>
       </main>
